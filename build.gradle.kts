@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation("org.neo4j.driver:neo4j-java-driver:5.25.0")
-    //implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.mysql:mysql-connector-j")
 
     implementation("org.springframework.boot:spring-boot-starter")

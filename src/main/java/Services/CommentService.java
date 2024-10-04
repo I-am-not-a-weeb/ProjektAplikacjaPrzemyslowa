@@ -3,8 +3,8 @@ package Services;
 
 import database.repositories.CommentRepo;
 
+import database.mysql.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
-import database.neo4j.Comment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

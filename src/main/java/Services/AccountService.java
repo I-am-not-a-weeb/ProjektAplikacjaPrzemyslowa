@@ -1,10 +1,12 @@
 package Services;
 
 
-import database.neo4j.Account;
+//import database.neo4j.Account;
+import database.mysql.Account;
 import database.repositories.AccountRepo;
 import database.repositories.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
     @Autowired private AccountRepo accountRepo;
-    @Autowired private CommentRepo commentRepo;
+    //@Autowired private CommentRepo commentRepo;
 
     @Transactional public Account createAccount(String username, String email) {
         Account account = new Account();
