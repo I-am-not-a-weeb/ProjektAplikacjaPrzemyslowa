@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableTransactionManagement
 @SpringBootApplication
 @EnableNeo4jRepositories
-@ComponentScan(basePackages = {"Controllers", "Services"})
+@ComponentScan(basePackages = {"Controllers", "Services","Security","neo4j.neo4jMappings", "neo4j.repositories"})
 public class IndustrialApplication {
     public static void main(String[] args) {
         SpringApplication.run(IndustrialApplication.class, args);

@@ -1,10 +1,8 @@
-package neo4j.neo4jRepos;
+package database.repositories;
 
-import neo4j.neo4jMappings.Account;
-import neo4j.neo4jMappings.Comment;
+import database.neo4j.Comment;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface CommentRepo extends PagingAndSortingRepository<Comment, Long>, CrudRepository<Comment, Long> {
 

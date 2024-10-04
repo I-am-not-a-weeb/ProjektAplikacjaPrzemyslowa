@@ -1,9 +1,6 @@
-package neo4j.neo4jMappings;
+package database.neo4j;
 
 import org.springframework.data.neo4j.core.schema.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Node
 public class Comment {

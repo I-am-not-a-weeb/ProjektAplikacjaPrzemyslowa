@@ -12,7 +12,11 @@
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1>Demo</h1>
-<div class="container"></div>
+<div class="container unauthenticated">
+    With GitHub: <a href="/oauth2/authorization/github">click here</a>
+</div>
+<div class="container authenticated" style="display:none">
+    Logged in as: <span id="user"></span>
+</div>
 </body>
 </html>

@@ -1,6 +1,6 @@
-package neo4j.neo4jRepos;
+package database.repositories;
 
-import neo4j.neo4jMappings.Account;
+import database.neo4j.Account;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -10,6 +10,8 @@ import org.springframework.data.repository.CrudRepository;
 
 
 public interface AccountRepo extends PagingAndSortingRepository<Account, Long>, CrudRepository<Account, Long> {
-    //List<Account> findByUsername(@Param("username")String username);
-    //void deleteByUsername(@Param("username")String username);
+
+    Account findByUsername(String username);
+
+    Account findByEmail(String email);
 }

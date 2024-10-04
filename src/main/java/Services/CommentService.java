@@ -1,11 +1,10 @@
 package Services;
 
 
-import neo4j.neo4jRepos.CommentRepo;
+import database.repositories.CommentRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import neo4j.neo4jMappings.Account;
-import neo4j.neo4jMappings.Comment;
+import database.neo4j.Comment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

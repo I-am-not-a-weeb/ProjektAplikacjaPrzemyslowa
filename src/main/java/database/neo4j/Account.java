@@ -1,6 +1,5 @@
-package neo4j.neo4jMappings;
+package database.neo4j;
 
-import org.neo4j.driver.util.Immutable;
 import org.springframework.data.neo4j.core.schema.*;
 
 import java.util.HashSet;
@@ -10,7 +9,7 @@ import java.util.Set;
 public class Account {
     @Id @GeneratedValue private Long id;
     private String username;
-
+    private String email;
     @Relationship(type = "LIKED_ACCOUNT", direction = Relationship.Direction.OUTGOING)
     public Set<Account> likedAccounts;
 
@@ -36,6 +35,12 @@ public class Account {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void likedAccount(Account likedAcc)
