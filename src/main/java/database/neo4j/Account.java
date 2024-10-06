@@ -13,6 +13,10 @@ public class Account {
     @Relationship(type = "LIKED_ACCOUNT", direction = Relationship.Direction.OUTGOING)
     public Set<Account> likedAccounts;
 
+
+    @Relationship(type = "LIKED_MEME", direction = Relationship.Direction.OUTGOING)
+    public Set<Meme> likedMemes;
+
     @Relationship(type = "LIKED_COMMENT", direction = Relationship.Direction.OUTGOING)
     public Set<Comment> likedComments;
 

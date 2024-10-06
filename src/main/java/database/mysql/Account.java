@@ -1,7 +1,7 @@
 package database.mysql;
 
 import jakarta.persistence.*;
-
+import java.util.HashSet;
 
 @Entity
 @Table(name = "account")
@@ -15,6 +15,14 @@ public class Account {
     private String username;
     @Column(nullable = false)
     private String email;
+
+    @ManyToMany
+    @JoinTable(
+            name = "liked_accounts",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "liked_account_id"))
+    private HashSet<Account> likedAccounts = new HashSet<>();
+
 
     public Long getId() {
         return id;

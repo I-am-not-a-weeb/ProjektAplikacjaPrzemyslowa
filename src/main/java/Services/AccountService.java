@@ -24,5 +24,7 @@ public class AccountService {
         return account;
     }
 
-
+    @Transactional public Account getAccountByUsername(String username) {
+        return accountRepo.findByUsername(username);
+    }
 }

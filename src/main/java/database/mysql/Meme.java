@@ -3,6 +3,8 @@ package database.mysql;
 import database.mysql.Account;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+
 @Entity
 @Table(name = "meme")
 public class Meme {
@@ -15,6 +17,14 @@ public class Meme {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     public Account author;
+
+    @ManyToMany()
+    @JoinTable(
+            name = "meme_tags",
+            joinColumns = @JoinColumn(name = "meme_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private HashSet<Tags> tags = new HashSet<>();
 
     public String getTitle() {
         return title;
@@ -33,6 +43,10 @@ public class Meme {
     }
     public Account getAuthor() {
         return author;
+    }
+
+    public HashSet<Tags> getTags() {
+        return tags;
     }
     
 }

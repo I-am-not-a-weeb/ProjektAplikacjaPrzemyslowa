@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import database.mysql.Account;
 @RestController
 @RequestMapping("/account")
 public class AccountController {
@@ -28,6 +29,12 @@ public class AccountController {
     @GetMapping("/{username}/")
     public String getAccount(@PathVariable String username) {
 
-        return "Account details for " + username;
+        Account acc = accountService.getAccountByUsername(username);
+
+        if(acc == null)
+        {
+            return "Account not found";
+        }
+        return "Account found";
     }
 }
