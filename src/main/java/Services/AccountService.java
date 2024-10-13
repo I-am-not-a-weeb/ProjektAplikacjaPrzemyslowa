@@ -1,30 +1,60 @@
 package Services;
 
-
-//import database.neo4j.Account;
-import database.mysql.Account;
-import database.repositories.AccountRepo;
-import database.repositories.CommentRepo;
+import Database.Account;
+import Repos.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class AccountService {
-    @Autowired private AccountRepo accountRepo;
-    //@Autowired private CommentRepo commentRepo;
+    @Autowired
+    private final AccountRepo accountRepo;
 
-    @Transactional public Account createAccount(String username, String email) {
-        Account account = new Account();
-        account.setUsername(username);
-        account.setEmail(email);
-        accountRepo.save(account);
-        return account;
+    public AccountService() {
+        this.accountRepo = null;
+    }
+    public AccountService(AccountRepo accountRepo) {
+        this.accountRepo = accountRepo;
     }
 
-    @Transactional public Account getAccountByUsername(String username) {
-        return accountRepo.findByUsername(username);
+    public boolean addAccount(Account account) {
+        if(account == null ||
+                accountRepo.findByUsername(account.getUsername()) != null ||
+                accountRepo.findByEmail(account.getEmail()) != null
+        ) {
+            return false;
+        }
+        try{
+            accountRepo.save(account);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
+
+    public Account getAccountByUsername(String username) {
+        try{
+            Account found = accountRepo.findByUsername(username);
+            return found;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Account getAccountByEmail(String email) {
+        try{
+            Account found = accountRepo.findByEmail(email);
+            return found;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    //public boolean addLikedMeme(String username) {
+    //
+    //}
 }

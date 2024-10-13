@@ -1,40 +1,47 @@
 package Controllers;
 
-import org.springframework.web.bind.annotation.*;
+
+import Database.Account;
 import Services.AccountService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import database.mysql.Account;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/")
-    public String createAccount(@RequestParam("username") String username, @RequestParam("email") String email)
-    {
-        if(username == null || email == null)
-        {
-            return "Username or email must be provided";
+    @PostMapping("/add")
+    public String addAccount(@RequestParam String username, @RequestParam String email, HttpServletResponse response) {
+        if(username == null && email == null) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return "Username and email cannot be null";
         }
-        accountService.createAccount(username,email);
-        return "Account created";
+
+        Account account = new Account();
+        account.setUsername(username);
+        account.setEmail(email);
+        if(!accountService.addAccount(account))
+        {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return "Username of email already used";
+        }
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        return "Account added";
     }
 
-    @GetMapping("/{username}/")
-    public String getAccount(@PathVariable String username) {
+    @GetMapping("/{username}")
+    @ResponseBody
+    public Account getAccount(@PathVariable String username) {
+        Account found = accountService.getAccountByUsername(username);
+        return found;
+    }
 
-        Account acc = accountService.getAccountByUsername(username);
-
-        if(acc == null)
-        {
-            return "Account not found";
-        }
-        return "Account found";
+    @GetMapping("/{username}/memes")
+    @ResponseBody
+    public String getLikedMemes(@PathVariable String username) {
+        return accountService.getAccountByUsername(username).getLikedMemes().toString();
     }
 }

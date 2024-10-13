@@ -1,21 +1,38 @@
 package Services;
 
-import database.mysql.Meme;
-import jakarta.transaction.Transactional;
+import Database.Meme;
+import Repos.MemeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import database.repositories.MemeRepo;
+
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class MemeService {
-    @Autowired private MemeRepo memeRepo;
+    @Autowired
+    private final MemeRepo memeRepo;
 
-    @Transactional
-    public void deleteMeme(Long id) {
-        memeRepo.deleteById(id);
+    public MemeService() {
+        this.memeRepo = null;
+    }
+    public MemeService(MemeRepo memeRepo) {
+        this.memeRepo = memeRepo;
     }
 
-    @Transactional
     public void addMeme(Meme meme) {
-        memeRepo.save(meme);
+        try{
+            memeRepo.save(meme);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Meme getMemeById(long id) {
+        return memeRepo.findById(id);
+    }
+
+    public Optional<Meme> getMemesByWordInTitle(String title) {
+        return memeRepo.findByWordInTitle(title);
     }
 }
