@@ -22,6 +22,6 @@ public interface AccountRepo extends JpaRepository<Account, Long> {
     @Query("SELECT m FROM Meme m WHERE m.authorMeme.username = :username")
     Set<Meme> findAllLikedMemesByUsername(@Param("username") String username);
 
-
+    Set<Account> findAllAccountsOrderByLikingAccounts(Set<Account> likingAccounts);
 
 }

@@ -1,6 +1,7 @@
 package Controllers;
 
 import Database.Account;
+import Database.Comment;
 import Database.Meme;
 import Database.Tag;
 import Services.AccountService;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 
 
 @RestController
@@ -20,11 +22,6 @@ public class MemeController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/{id}")
-    @ResponseBody
-    public Meme getMeme(@PathVariable Long id) {
-        return memeService.getMemeById(id);
-    }
 
     @PostMapping
     public String addMeme(
@@ -49,6 +46,65 @@ public class MemeController {
         memeService.addMeme(meme);
         return "Meme added";
     }
+    @GetMapping("/{id}")
+    @ResponseBody
+    public Meme getMeme(@PathVariable Long id) {
+        return memeService.getMemeById(id);
+    }
 
+    @PostMapping("/{id}/like")
+    public String likeMeme(@PathVariable Long id, @RequestParam String username, HttpServletResponse response) {
 
+        Account account = accountService.getAccountByUsername(username);
+        if(account == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "Account not found";
+        }
+
+        Meme meme = memeService.getMemeById(id);
+        if(meme == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "Meme not found";
+        }
+
+        meme.addLikingAccount(account);
+        account.addLikedMeme(meme);
+        accountService.save(account);
+        memeService.save(meme);
+        return "Meme liked";
+    }
+    @GetMapping("/{id}/likes")
+    public int getNumOfLikes(@PathVariable Long id, HttpServletResponse response)
+    {
+        Meme meme = memeService.getMemeById(id);
+        if(meme == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return -1;
+        }
+        return meme.getLikingAccounts().size();
+    }
+
+    @PostMapping("/{id}/comment")
+    public void addCommentToMeme(@PathVariable Long id, @RequestParam String username, @RequestParam String content, HttpServletResponse response) {
+        Account account = accountService.getAccountByUsername(username);
+        if(account == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        Meme meme = memeService.getMemeById(id);
+        if(meme == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        meme.addComment(new Comment(account,content));
+    }
+    @GetMapping("/{id}/comments")
+    public Set<Comment> getComments(@PathVariable Long id, HttpServletResponse response) {
+        Meme meme = memeService.getMemeById(id);
+        if(meme == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        return meme.getComments();
+    }
 }

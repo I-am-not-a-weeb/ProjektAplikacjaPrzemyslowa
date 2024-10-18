@@ -1,11 +1,14 @@
 package Database;
 
+import Serializers.MemeSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@JsonSerialize(using = MemeSerializer.class)
 public class Meme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +22,7 @@ public class Meme {
 
     @ManyToMany(mappedBy = "likedMemes",
             cascade=CascadeType.ALL)
-    private Set<Account> likedAccounts = new HashSet<>();
+    private Set<Account> likingAccounts = new HashSet<>();
 
     @OneToMany(mappedBy = "memeCommented",
             cascade=CascadeType.ALL)
@@ -66,12 +69,12 @@ public class Meme {
         this.authorMeme = authorMeme;
     }
 
-    public Set<Account> getLikedAccounts() {
-        return likedAccounts;
+    public Set<Account> getLikingAccounts() {
+        return likingAccounts;
     }
 
-    public void addLikedAccounts(Account account) {
-        this.likedAccounts.add(account);
+    public void addLikingAccount(Account account) {
+        this.likingAccounts.add(account);
     }
 
     public Set<Comment> getComments() {

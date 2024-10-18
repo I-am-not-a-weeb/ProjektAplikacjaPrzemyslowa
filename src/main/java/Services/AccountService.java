@@ -54,6 +54,26 @@ public class AccountService {
         return null;
     }
 
+    public boolean likeAccountByUsername(String likingUsername, String likedUsername)
+    {
+        Account likingAccount = accountRepo.findByUsername(likingUsername);
+        Account likedAccount = accountRepo.findByUsername(likedUsername);
+
+        if(likingAccount == null || likedAccount == null)
+        {
+            return false;
+        }
+
+        likedAccount.addLikingAccount(likingAccount);
+        accountRepo.save(likedAccount);
+        accountRepo.save(likingAccount);
+        return true;
+    }
+
+    public void save(Account account) {
+        accountRepo.save(account);
+    }
+
     //public boolean addLikedMeme(String username) {
     //
     //}

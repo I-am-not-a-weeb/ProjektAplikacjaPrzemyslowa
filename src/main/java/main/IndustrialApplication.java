@@ -16,7 +16,7 @@ import java.util.Arrays;
 @SpringBootApplication(scanBasePackages={"Controllers", "Repos", "Services"})
 //@EnableAutoConfiguration
 @EnableJpaRepositories(basePackages = {"Repos"})
-@ComponentScan(basePackages = {"Controllers", "Repos", "Services"})
+@ComponentScan(basePackages = {"Controllers", "Repos", "Services","Serializers"})
 @EntityScan(basePackages = {"Database"})
 public class IndustrialApplication {
     public static void main(String[] args) {

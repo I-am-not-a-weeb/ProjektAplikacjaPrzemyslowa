@@ -1,6 +1,7 @@
 package Services;
 
 import Database.Meme;
+import Repos.AccountRepo;
 import Repos.MemeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ import java.util.Set;
 public class MemeService {
     @Autowired
     private final MemeRepo memeRepo;
+    //@Autowired
+    //private final AccountRepo accountRepo;
+
 
     public MemeService() {
         this.memeRepo = null;
@@ -34,5 +38,9 @@ public class MemeService {
 
     public Optional<Meme> getMemesByWordInTitle(String title) {
         return memeRepo.findByWordInTitle(title);
+    }
+
+    public void save(Meme meme) {
+        memeRepo.save(meme);
     }
 }

@@ -1,12 +1,16 @@
 package Database;
 
 
+import Serializers.AccountSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
+@JsonSerialize(using = AccountSerializer.class)
 public class Account {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -44,6 +48,7 @@ public class Account {
     private Set<Meme> likedMemes = new HashSet<>();
 
 
+
     @OneToMany(mappedBy = "authorComment",
             cascade=CascadeType.ALL)
     private Set<Comment> authoredComments = new HashSet<>();
@@ -66,6 +71,10 @@ public class Account {
     }
     public Account() {
     }
+
+    public Long getId() {
+        return id;
+    }
     public String getUsername() {
         return username;
     }
@@ -87,11 +96,14 @@ public class Account {
     public Set<Account> getLikedAccounts() {
         return likedAccounts;
     }
+
+    public Set<String> getLikedAccountsUsernames() {
+        return likedAccounts.stream().map(Account::getUsername).collect(Collectors.toSet());
+    }
     public void addLikedAccount(Account account) {
         likedAccounts.add(account);
         account.likingAccounts.add(this);
     }
-
     public Set<Account> getLikingAccounts() {
         return likingAccounts;
     }
@@ -99,12 +111,18 @@ public class Account {
         likingAccounts.add(account);
         account.likedAccounts.add(this);
     }
-
     public Set<Meme> getAuthoredMemes() {
         return authoredMemes;
     }
     public void addAuthoredMeme(Meme meme) {
         authoredMemes.add(meme);
+    }
+    public Set<Comment> getAuthoredComments() {
+        return authoredComments;
+    }
+
+    public Set<Comment> getLikedComments() {
+        return likedComments;
     }
 
     public Set<Meme> getLikedMemes() {
