@@ -1,4 +1,4 @@
-package Controllers;
+package api.Controllers;
 
 import Database.Account;
 import Database.Comment;
@@ -8,13 +8,15 @@ import Services.AccountService;
 import Services.MemeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 
 @RestController
-@RequestMapping("/meme")
+@RequestMapping("/api/meme")
 public class MemeController {
     @Autowired
     private MemeService memeService;
@@ -85,7 +87,14 @@ public class MemeController {
     }
 
     @PostMapping("/{id}/comment")
-    public void addCommentToMeme(@PathVariable Long id, @RequestParam String username, @RequestParam String content, HttpServletResponse response) {
+    public void addCommentToMeme(
+            @PathVariable Long id,
+            @RequestParam String username,
+            @RequestParam String content,
+            @ModelAttribute Comment comment,
+            @AuthenticationPrincipal OAuth2User oauthUser,
+            HttpServletResponse response
+            ) {
         Account account = accountService.getAccountByUsername(username);
         if(account == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -96,7 +105,7 @@ public class MemeController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        meme.addComment(new Comment(account,content));
+        //meme.addComment(new Comment(account,content));
     }
     @GetMapping("/{id}/comments")
     public Set<Comment> getComments(@PathVariable Long id, HttpServletResponse response) {

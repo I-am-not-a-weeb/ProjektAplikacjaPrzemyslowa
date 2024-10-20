@@ -13,5 +13,5 @@ public interface TagRepo extends JpaRepository<Tag,Long> {
     Optional<Tag> findById(long id);
     Tag findByName(String name);
 
-
+    Set<Tag> findAllByOrderByMemes();
 }

@@ -1,14 +1,16 @@
 package Database;
 
+import api.Serializers.CommentSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Entity
-@JsonSerialize(using = Serializers.CommentSerializer.class)
+@JsonSerialize(using = CommentSerializer.class)
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,20 +57,34 @@ public class Comment {
     public void setContent(String content) {
         this.content = content;
     }
-
     public Account getAuthorComment() {
         return authorComment;
     }
-
     public void setAuthorComment(Account authorComment) {
         this.authorComment = authorComment;
     }
-
     public Set<Account> getLikingAccounts() {
         return likingAccounts;
     }
-
     public void addLikedAccounts(Account account) {
         this.likingAccounts.add(account);
     }
+
+    public Comment getParentComment() {
+        return parentComment;
+    }
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
+    }
+
+    public Meme getMemeCommented() {
+        return memeCommented;
+    }
+    public void setMemeCommented(Meme memeCommented) {
+        this.memeCommented = memeCommented;
+    }
+    public Set<Long> getChildrenComments() {
+        return childComments.stream().map(Comment::getId).collect(Collectors.toSet());
+    }
+
 }

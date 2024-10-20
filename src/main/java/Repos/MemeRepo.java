@@ -22,4 +22,8 @@ public interface MemeRepo extends JpaRepository<Meme,Long> {
 
     @Query("SELECT m.tags FROM Meme m WHERE m.id = :id")
     Set<Tag> findAllTagsByMemeId(@Param("id") long id);
+
+
+    //Query("SELECT m FROM Meme m ORDER BY m.likingAccounts.size DESC")
+    Set<Meme> findAllByOrderByLikingAccountsDesc();
 }

@@ -1,6 +1,6 @@
 package Database;
 
-import Serializers.MemeSerializer;
+import api.Serializers.MemeSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 

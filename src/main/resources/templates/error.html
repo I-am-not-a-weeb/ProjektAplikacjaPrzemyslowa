@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error - Something Went Wrong</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .error-container {
+            text-align: center;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 0;
+            color: #dc3545;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 20px 0;
+            color: #555;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="error-container">
+    <h1>Oops!</h1>
+    <p>Something went wrong on our end.</p>
+
+    <!-- Error Status Code and Message -->
+    <p th:if="${status}">
+        Error Code: <span th:text="${status}"></span>
+    </p>
+    <p th:if="${error}">
+        Error Message: <span th:text="${error}"></span>
+    </p>
+
+    <a href="/" th:href="@{/}">Go Back to Home</a>
+</div>
+
+</body>
+</html>

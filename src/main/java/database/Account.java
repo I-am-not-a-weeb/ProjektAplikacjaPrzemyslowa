@@ -1,7 +1,7 @@
 package Database;
 
 
-import Serializers.AccountSerializer;
+import api.Serializers.AccountSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
@@ -70,6 +70,10 @@ public class Account {
         this.permissions = permissions;
     }
     public Account() {
+    }
+
+    public Account(String username) {
+        this.username = username;
     }
 
     public Long getId() {

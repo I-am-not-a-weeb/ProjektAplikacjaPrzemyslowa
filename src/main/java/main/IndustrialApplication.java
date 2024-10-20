@@ -13,10 +13,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.util.Arrays;
 
 //@EnableTransactionManagement
-@SpringBootApplication(scanBasePackages={"Controllers", "Repos", "Services"})
+@SpringBootApplication(scanBasePackages={"web","api.Controllers", "Repos", "Services","Security"})
 //@EnableAutoConfiguration
 @EnableJpaRepositories(basePackages = {"Repos"})
-@ComponentScan(basePackages = {"Controllers", "Repos", "Services","Serializers"})
+@ComponentScan(basePackages = {"web","api.Controllers", "Repos", "Services","api.Serializers","Security"})
 @EntityScan(basePackages = {"Database"})
 public class IndustrialApplication {
     public static void main(String[] args) {

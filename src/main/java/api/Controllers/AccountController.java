@@ -1,4 +1,4 @@
-package Controllers;
+package api.Controllers;
 
 
 import Database.Account;
@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/api/account")
 public class AccountController {
     @Autowired
     private AccountService accountService;

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Account details</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div th:object="${account}" class="container">
+    <h1>Username: <span th:text="*{username}"></span></h1>
+    <h2>Likes: <span th:text="*{likingAccounts.size()}"></span></h2>
+    <table>
+        <tr>
+            <th>
+                Added memes
+            </th>
+            <th>
+                Liked memes
+            </th>
+            <th>
+                Liked accounts
+            </th>
+            <th>
+                Reported accounts
+            </th>
+        </tr>
+        <tr>
+            <td th:object="${account}">
+                <span th:each="added_meme:*{authoredMemes}">
+                    <a th:href="@{'/meme/'+${added_meme.id}}"
+                       th:text="${added_meme.id}"
+                    >
+                    </a>
+                </span>
+            </td>
+            <td th:object="${account}">
+                <span th:each="liked_meme:*{likedMemes}">
+                    <a th:href="@{'account/'+${liked_meme.id}}"
+                        th:text="${liked_meme.id}"
+                    >
+                    </a>
+                </span>
+            </td>
+            <td th:object="${account}">
+                <span th:each="liked_acc:*{likedAccountsUsernames}">
+                    <a th:href="@{'account/'+${liked_acc}}"
+                        th:text="${liked_acc}"
+                    >
+                    </a>
+                </span>
+            </td>
+            <td th:object="${account}">
+
+                zreportowane konta
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+</body>
+</html>
