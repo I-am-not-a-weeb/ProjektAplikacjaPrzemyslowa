@@ -43,7 +43,7 @@ public class MemeWebController {
     }
 
     @PostMapping("/meme/{id}/comment")
-    public void addCommentToMeme(@PathVariable Long id,
+    public String addCommentToMeme(@PathVariable Long id,
                                  @ModelAttribute Comment comment,
                                  @AuthenticationPrincipal OAuth2User oauthUser,
                                  HttpServletResponse response
@@ -57,5 +57,6 @@ public class MemeWebController {
 
         commentService.save(comment);
         response.setStatus(HttpServletResponse.SC_CREATED);
+        return "redirect:/meme/" + id;
     }
 }
