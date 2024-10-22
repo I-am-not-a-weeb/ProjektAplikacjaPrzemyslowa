@@ -4,6 +4,7 @@ import Database.Account;
 import Repos.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -68,6 +69,13 @@ public class AccountService {
         accountRepo.save(likedAccount);
         accountRepo.save(likingAccount);
         return true;
+    }
+
+    @Transactional
+    public void accountLikeAccount(Account liked,Account liking)
+    {
+        liked.addLikingAccount(liking);
+        liking.addLikedAccount(liked);
     }
 
     public void save(Account account) {

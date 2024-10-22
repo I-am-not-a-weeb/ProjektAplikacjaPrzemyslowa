@@ -1,10 +1,12 @@
 package Services;
 
 
+import Database.Account;
 import Database.Comment;
 import Repos.CommentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -30,6 +32,11 @@ public class CommentService {
         return comment.getChildrenComments();
     }
 
+    @Transactional
+    public void accountLikeComment(Comment comment, Account account) {
+        comment.addLikingAccount(account);
+        account.addLikedComment(comment);
+    }
     public void save(Comment comment) {
         commentRepo.save(comment);
     }

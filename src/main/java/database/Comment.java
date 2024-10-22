@@ -66,7 +66,7 @@ public class Comment {
     public Set<Account> getLikingAccounts() {
         return likingAccounts;
     }
-    public void addLikedAccounts(Account account) {
+    public void addLikingAccount(Account account) {
         this.likingAccounts.add(account);
     }
 

@@ -20,6 +20,11 @@ public class Account {
     private String username;
     @Column(unique = true, nullable = false)
     private String email;
+
+
+
+    @Column
+    private String imageType;
     private int permissions=0;
 
 
@@ -106,14 +111,14 @@ public class Account {
     }
     public void addLikedAccount(Account account) {
         likedAccounts.add(account);
-        account.likingAccounts.add(this);
+        //account.likingAccounts.add(this);
     }
     public Set<Account> getLikingAccounts() {
         return likingAccounts;
     }
     public void addLikingAccount(Account account) {
         likingAccounts.add(account);
-        account.likedAccounts.add(this);
+        //account.likedAccounts.add(this);
     }
     public Set<Meme> getAuthoredMemes() {
         return authoredMemes;
@@ -134,5 +139,19 @@ public class Account {
     }
     public void addLikedMeme(Meme meme) {
         likedMemes.add(meme);
+    }
+
+    public void addLikedComment(Comment comment) {
+        likedComments.add(comment);
+    }
+    public Set<Comment> getLikedCommentsUsernames() {
+        return likedComments;
+    }
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
     }
 }

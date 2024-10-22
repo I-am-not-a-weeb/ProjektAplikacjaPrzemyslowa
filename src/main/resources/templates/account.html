@@ -13,6 +13,9 @@
 <div th:object="${account}" class="container">
     <h1>Username: <span th:text="*{username}"></span></h1>
     <h2>Likes: <span th:text="*{likingAccounts.size()}"></span></h2>
+    <form th:action="@{'/account/'+*{username}+'/like'}" method="post">
+        <button type="submit" name="submit">Like!</button>
+    </form>
     <table>
         <tr>
             <th>
@@ -39,7 +42,7 @@
             </td>
             <td th:object="${account}">
                 <span th:each="liked_meme:*{likedMemes}">
-                    <a th:href="@{'account/'+${liked_meme.id}}"
+                    <a th:href="@{'/meme/'+${liked_meme.id}}"
                         th:text="${liked_meme.id}"
                     >
                     </a>
@@ -47,7 +50,7 @@
             </td>
             <td th:object="${account}">
                 <span th:each="liked_acc:*{likedAccountsUsernames}">
-                    <a th:href="@{'account/'+${liked_acc}}"
+                    <a th:href="@{'/account/'+${liked_acc}}"
                         th:text="${liked_acc}"
                     >
                     </a>
