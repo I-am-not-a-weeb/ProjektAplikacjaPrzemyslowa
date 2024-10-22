@@ -18,7 +18,7 @@
                 <button th:action="">Like!</button>
             </span>
         </h3>
-        <img th:src="*{getUrl()}" alt="Meme image">
+        <img th:src="@{'~/'+*{getUrl()}}" alt="Meme image">
     </div>
     <div>
         <h3>Comments:</h3>

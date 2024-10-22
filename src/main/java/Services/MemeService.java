@@ -4,8 +4,14 @@ import Database.Meme;
 import Repos.AccountRepo;
 import Repos.MemeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,6 +33,27 @@ public class MemeService {
     public void addMeme(Meme meme) {
         try{
             memeRepo.save(meme);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public Page<Meme> getAllMemesByPage(PageRequest page) {
+        return memeRepo.findAll(page);
+    }
+
+    public void addMemeFile(MultipartFile MPfile, Meme meme)
+    {
+        memeRepo.save(meme);
+
+        String fileType = MPfile.getContentType();
+        fileType = fileType.substring(fileType.indexOf('/') + 1);
+        String filepath = "images/"+meme.getId().toString() +"."+ fileType;
+        File file = new File(filepath);
+        try {
+            file.createNewFile();
+            meme.setUrl(filepath);
+            memeRepo.save(meme);
+            MPfile.transferTo(Paths.get(file.getAbsolutePath()));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

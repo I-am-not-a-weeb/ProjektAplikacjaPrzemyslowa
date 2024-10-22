@@ -1,6 +1,5 @@
 package api.Serializers;
 
-import Database.Account;
 import Database.Meme;
 
 import Database.Tag;

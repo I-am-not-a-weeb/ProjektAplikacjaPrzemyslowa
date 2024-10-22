@@ -24,9 +24,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
             .requestMatchers("/login").permitAll()
+                .requestMatchers("/images").permitAll()
             .anyRequest().authenticated()
+
         ).oauth2Login((oauth2Login) -> oauth2Login
-            .defaultSuccessUrl("/ranking", true)
+            .defaultSuccessUrl("/", true)
             .userInfoEndpoint((userInfo) -> userInfo
             .userService(meinOAuth2UserService)
         )

@@ -14,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
+@RequestMapping("/meme")
 public class MemeWebController {
     @Autowired
     private AccountService accountService;
@@ -24,7 +26,23 @@ public class MemeWebController {
     @Autowired
     private CommentService commentService;
 
-    @RequestMapping("/meme/{id}")
+    @PostMapping
+    public String addMeme(@ModelAttribute Meme meme,
+                          @RequestParam(name = "file",required = false) MultipartFile file,
+                          @AuthenticationPrincipal OAuth2User oauthUser,
+                          HttpServletResponse response) {
+        String username = oauthUser.getAttribute("login");
+        Account account = accountService.getAccountByUsername(username);
+
+        meme.setAuthorMeme(account);
+
+        memeService.addMemeFile(file, meme);
+
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        return "redirect:/";
+    }
+
+    @GetMapping("/{id}")
     public String showMemePage(@PathVariable Long id,
                                @AuthenticationPrincipal OAuth2User oauthUser,
                                //HttpServletRequest request,

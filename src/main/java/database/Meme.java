@@ -17,6 +17,7 @@ public class Meme {
     private String title;
     private String url;
 
+
     @ManyToOne(cascade=CascadeType.ALL)
     private Account authorMeme;
 
