@@ -27,7 +27,9 @@
             <h2 th:text="${meme.getTitle()}"></h2>
             <h3 th:text="@{'Posted by: '+${meme.getAuthorMeme().getUsername()}}"></h3>
             <h3 th:text="@{'Likes: '+${meme.getLikingAccounts().size()}}"></h3>
-            <button>Like!</button>
+            <form th:action="@{'/meme/'+${meme.getId()}+'/like'}" method="post">
+                <button type="submit" name="submit">Like!</button>
+            </form>
             <a th:href="@{'/meme/'+${meme.getId()}}">
                 <img th:src="@{${meme.getUrl()}}" alt="">
             </a>

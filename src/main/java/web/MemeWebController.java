@@ -9,6 +9,7 @@ import Services.MemeService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +61,7 @@ public class MemeWebController {
         return "meme";
     }
 
-    @PostMapping("/meme/{id}/comment")
+    @PostMapping("/{id}/comment")
     public String addCommentToMeme(@PathVariable Long id,
                                  @ModelAttribute Comment comment,
                                  @AuthenticationPrincipal OAuth2User oauthUser,
@@ -76,5 +77,21 @@ public class MemeWebController {
         commentService.save(comment);
         response.setStatus(HttpServletResponse.SC_CREATED);
         return "redirect:/meme/" + id;
+    }
+
+    @PostMapping("/{id}/like")
+    public String likeMeme(@PathVariable Long id,
+                           @RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer,
+                           @AuthenticationPrincipal OAuth2User oauthUser,
+                           HttpServletResponse response) {
+        String username = oauthUser.getAttribute("login");
+        Account account = accountService.getAccountByUsername(username);
+
+        Meme meme = memeService.getMemeById(id);
+        memeService.accountLikeMeme(meme, account);
+
+
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        return "redirect:" + referrer;
     }
 }

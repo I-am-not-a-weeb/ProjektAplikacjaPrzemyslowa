@@ -69,10 +69,7 @@ public class MemeController {
             return "Meme not found";
         }
 
-        meme.addLikingAccount(account);
-        account.addLikedMeme(meme);
-        accountService.save(account);
-        memeService.save(meme);
+        memeService.accountLikeMeme(meme, account);
         return "Meme liked";
     }
     @GetMapping("/{id}/likes")

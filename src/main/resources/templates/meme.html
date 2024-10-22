@@ -15,9 +15,13 @@
         <h3>Posted by: <span th:text="*{getAuthorMeme().getUsername()}"></span></h3>
         <h3>Likes:
             <span th:text="*{getLikingAccounts().size()}">
-                <button th:action="">Like!</button>
+
             </span>
         </h3>
+        <form th:action="@{'/meme/'+${meme.getId()}+'/like'}" method="post">
+            <button type="submit" name="submit">Like!</button>
+        </form>
+
         <img th:src="@{'~/'+*{getUrl()}}" alt="Meme image">
     </div>
     <div>

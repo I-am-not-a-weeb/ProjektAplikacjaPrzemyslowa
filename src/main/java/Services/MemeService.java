@@ -1,5 +1,6 @@
 package Services;
 
+import Database.Account;
 import Database.Meme;
 import Repos.AccountRepo;
 import Repos.MemeRepo;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -19,15 +21,17 @@ import java.util.Set;
 public class MemeService {
     @Autowired
     private final MemeRepo memeRepo;
-    //@Autowired
-    //private final AccountRepo accountRepo;
+    @Autowired
+    private final AccountRepo accountRepo;
 
 
     public MemeService() {
         this.memeRepo = null;
+        this.accountRepo = null;
     }
     public MemeService(MemeRepo memeRepo) {
         this.memeRepo = memeRepo;
+        this.accountRepo = null;
     }
 
     public void addMeme(Meme meme) {
@@ -65,6 +69,12 @@ public class MemeService {
 
     public Optional<Meme> getMemesByWordInTitle(String title) {
         return memeRepo.findByWordInTitle(title);
+    }
+
+    @Transactional
+    public void accountLikeMeme(Meme meme, Account account) {
+        meme.addLikingAccount(account);
+        account.addLikedMeme(meme);
     }
 
     public void save(Meme meme) {
