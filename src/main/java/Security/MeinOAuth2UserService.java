@@ -20,13 +20,11 @@ public class MeinOAuth2UserService implements OAuth2UserService<OAuth2UserReques
 
         String username = oauth2User.getAttribute("login");
 
-
         if (username != null && accountRepository.findByUsername(username) == null) {
             Account account = new Account(username);
             account.setEmail(oauth2User.getAttribute("email"));
             accountRepository.save(account);
         }
-
-        return oauth2User;
+        return new MeinOAuth2User(oauth2User, accountRepository.findByUsername(username));
     }
 }

@@ -17,6 +17,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 @Controller
 @RequestMapping("/meme")
 public class MemeWebController {
@@ -36,7 +39,7 @@ public class MemeWebController {
         Account account = accountService.getAccountByUsername(username);
 
         meme.setAuthorMeme(account);
-
+        meme.setCreationDate(new Date());
         memeService.addMemeFile(file, meme);
 
         response.setStatus(HttpServletResponse.SC_CREATED);

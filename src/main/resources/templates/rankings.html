@@ -21,7 +21,7 @@
         <tr>
             <td>
                 <div th:each="account:${accounts}">
-                    <a  th:href="@{/account/{id}(id=${account.getUsername()})}" th:text="@{${account.getLikingAccounts().size()}+' '+${account.getUsername()}}"></a>
+                    <a th:href="@{/account/{id}(id=${account.getUsername()})}" th:text="@{${account.getLikingAccounts().size()}+' '+${account.getUsername()}}"></a>
                 </div>
             </td>
             <td >
@@ -32,7 +32,7 @@
             </td>
             <td >
                 <div th:each="comment:${comments}">
-                    <a th:href="@{/comment/{id}(id=${comment.getId()})}" th:text="@{${comment.getAuthorComment().getUsername()}+' '+${comment.getId()}}"></a>
+                    <a th:href="@{/comment/{id}(id=${comment.getId()})}" th:text="@{${comment.getLikingAccounts().size()}+' '+${comment.getId()}}"></a>
                 </div>
             </td>
         </tr>

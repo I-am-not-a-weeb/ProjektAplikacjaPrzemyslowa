@@ -13,7 +13,7 @@ import java.util.Set;
 @Service
 public class CommentService {
     @Autowired
-    CommentRepo commentRepo;
+    private CommentRepo commentRepo;
 
     public CommentService() {
         this.commentRepo = null;
@@ -39,5 +39,9 @@ public class CommentService {
     }
     public void save(Comment comment) {
         commentRepo.save(comment);
+    }
+
+    public void setCommentRepo(CommentRepo commentRepo) {
+        this.commentRepo = commentRepo;
     }
 }

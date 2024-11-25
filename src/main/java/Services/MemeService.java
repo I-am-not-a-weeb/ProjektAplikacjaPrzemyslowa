@@ -44,6 +44,9 @@ public class MemeService {
     public Page<Meme> getAllMemesByPage(PageRequest page) {
         return memeRepo.findAll(page);
     }
+    public Page<Meme> getAllMemesByCreationDateDescByPage(PageRequest page) {
+        return memeRepo.findAllByOrderByCreationDateDesc(page);
+    }
 
     public void addMemeFile(MultipartFile MPfile, Meme meme)
     {

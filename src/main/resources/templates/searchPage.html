@@ -5,32 +5,24 @@
     <title>Title</title>
 </head>
 <body>
-<span>Page: <span th:text="${page}"></span></span>
 <div class="container">
-    <a href="/search">Wyszukiwarken</a>
-    <a href="/ranking">Rankingen</a>
-    <a href="/admin">Adminen Panel</a>
-</div>
-<div class="container">
-    <div id="memeUpload">
-        <form   id="uploadForm"
-                method="post"
-                th:action="@{/meme}"
-                enctype="multipart/form-data">+
+    <div class="searchForm">
+        <form id="searchForm"
+              method="get"
+              th:action="@{/search}"
+        >
+            <label for="tags">Title of the meme:</label>
+            <input type="text" id="tags" name="tags" placeholder="TAG" required><br>
 
-            <label for="title">Title of the meme:</label>
-            <input type="text" id="title" name="title" placeholder="Enter meme title" required><br><br>
-
-            <label for="file">Choose file:</label>
-            <input type="file" id="file" name="file" required><br><br>
-            <button class="btn btn-sm btn-outline-success float-right" type="submit">
-                Upload
+            <button class="btn btn-sm" type="submit">
+                Search
             </button>
         </form>
     </div>
-    <div id="memes">
+    <div>
         <div class="meme" th:each="meme:${memes}">
             <h2 th:text="${meme.getTitle()}"></h2>
+            <div th:each="tag:*{meme.getTags()}"><span th:text="${tag.getName()}"></span></div>
             <h3 th:text="@{'Posted by: '+${meme.getAuthorMeme().getUsername()}}"></h3>
             <h3 th:text="@{'Likes: '+${meme.getLikingAccounts().size()}}"></h3>
             <form th:action="@{'/meme/'+${meme.getId()}+'/like'}" method="post">

@@ -27,16 +27,16 @@ public class AccountSerializer extends StdSerializer<Account> {
         jsonGenerator.writeNumberField("id", account.getId());
         jsonGenerator.writeStringField("username", account.getUsername());
         jsonGenerator.writeStringField("email", account.getEmail());
-        jsonGenerator.writeNumberField("permissions", account.getPermissions());
-
+        jsonGenerator.writeStringField("email2", account.getEmail2());
+        jsonGenerator.writeStringField("imageType", account.getImageType());
+        jsonGenerator.writeNumberField("permissions", account.getAdmin());
         jsonGenerator.writeNumberField("likes", account.getLikingAccounts().size());
-        // Serialize likedAccounts as a set of IDs
+
         Set<String> likedAccountUsernames = account.getLikedAccounts().stream()
                 .map(Account::getUsername)
                 .collect(Collectors.toSet());
         jsonGenerator.writeObjectField("likedAccounts", likedAccountUsernames);
 
-        // Serialize likingAccounts as a set of IDs
         Set<String> likingAccountUsernames = account.getLikingAccounts().stream()
                 .map(Account::getUsername)
                 .collect(Collectors.toSet());
@@ -61,9 +61,6 @@ public class AccountSerializer extends StdSerializer<Account> {
                 .map(Comment::getId)
                 .collect(Collectors.toSet());
         jsonGenerator.writeObjectField("likedComments", likedCommentIds);
-
-
-
 
         jsonGenerator.writeEndObject();
     }

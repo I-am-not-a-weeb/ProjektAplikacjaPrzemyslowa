@@ -26,7 +26,11 @@ public class RankingService {
         this.memeRepo = null;
         this.commentRepo = null;
     }
-    public RankingService(AccountRepo accountRepo, MemeRepo memeRepo, CommentRepo commentRepo) {
+    public RankingService(
+            AccountRepo accountRepo,
+            MemeRepo memeRepo,
+            CommentRepo commentRepo
+    ) {
         this.accountRepo = accountRepo;
         this.memeRepo = memeRepo;
         this.commentRepo = commentRepo;

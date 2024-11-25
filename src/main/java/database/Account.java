@@ -16,18 +16,15 @@ public class Account {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false,length = 30)
     private String username;
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     private String email;
-
-
-
+    @Column
+    private String email2;
     @Column
     private String imageType;
-    private int permissions=0;
-
-
+    private int admin =0;
     @ManyToMany(mappedBy = "likedAccounts",
             cascade=CascadeType.ALL)
     private Set<Account> likingAccounts = new HashSet<>();
@@ -38,9 +35,6 @@ public class Account {
             inverseJoinColumns = @JoinColumn(name = "liked_account_id")
     )
     private Set<Account> likedAccounts = new HashSet<>();
-
-
-
     @OneToMany(mappedBy = "authorMeme",
             cascade=CascadeType.ALL)
     private Set<Meme> authoredMemes = new HashSet<>();
@@ -51,9 +45,6 @@ public class Account {
             inverseJoinColumns = @JoinColumn(name = "liked_meme_id")
     )
     private Set<Meme> likedMemes = new HashSet<>();
-
-
-
     @OneToMany(mappedBy = "authorComment",
             cascade=CascadeType.ALL)
     private Set<Comment> authoredComments = new HashSet<>();
@@ -65,22 +56,23 @@ public class Account {
     )
     private Set<Comment> likedComments = new HashSet<>();
 
+    @OneToMany(cascade=CascadeType.ALL, mappedBy = "recipient")
+    private Set<Notification> notifications;
+
     public Account(String username, String email) {
         this.username = username;
         this.email = email;
     }
-    public Account(String username, String email, int permissions) {
+    public Account(String username, String email, int admin) {
         this.username = username;
         this.email = email;
-        this.permissions = permissions;
+        this.admin = admin;
     }
     public Account() {
     }
-
     public Account(String username) {
         this.username = username;
     }
-
     public Long getId() {
         return id;
     }
@@ -96,16 +88,15 @@ public class Account {
     public void setEmail(String email) {
         this.email = email;
     }
-    public int getPermissions() {
-        return permissions;
+    public int getAdmin() {
+        return admin;
     }
-    public void setPermissions(int permissions) {
-        this.permissions = permissions;
+    public void setAdmin(int permissions) {
+        this.admin = permissions;
     }
     public Set<Account> getLikedAccounts() {
         return likedAccounts;
     }
-
     public Set<String> getLikedAccountsUsernames() {
         return likedAccounts.stream().map(Account::getUsername).collect(Collectors.toSet());
     }
@@ -153,5 +144,29 @@ public class Account {
 
     public void setImageType(String imageType) {
         this.imageType = imageType;
+    }
+
+    public boolean isAdmin() {
+        return admin == 1;
+    }
+    public void setAdmin(boolean admin) {
+        this.admin = admin ? 1 : 0;
+    }
+    public String getEmail2() {
+        return email2;
+    }
+    public void setEmail2(String email2) {
+        this.email2 = email2;
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+    public void addNotification(Notification notification) {
+        this.notifications.add(notification);
     }
 }

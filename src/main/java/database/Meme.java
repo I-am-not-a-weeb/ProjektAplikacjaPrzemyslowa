@@ -4,6 +4,7 @@ import api.Serializers.MemeSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public class Meme {
     private String title;
     private String url;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
 
     @ManyToOne(cascade=CascadeType.ALL)
     private Account authorMeme;
@@ -93,5 +96,13 @@ public class Meme {
     }
     public void addTag(Tag tag) {
         this.tags.add(tag);
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }

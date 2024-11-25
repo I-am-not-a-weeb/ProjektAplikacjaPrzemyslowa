@@ -7,6 +7,8 @@ import Services.AccountService;
 import Services.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -19,9 +21,21 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @Controller
 public class CommentWebController {
     @Autowired
-    private CommentService commentService;
+    CommentService commentService;
     @Autowired
     private AccountService accountService;
+
+    /*CommentWebController() {
+        try{
+            ApplicationContext context =
+                    new ClassPathXmlApplicationContext(new String[] {"META-INF/beans.xml"});
+            this.commentService = (CommentService)context.getBean("commentService");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }*/
 
     @PostMapping("/comment/{id}/like")
     public String likeComment(@PathVariable Long id,
@@ -36,5 +50,9 @@ public class CommentWebController {
         commentService.accountLikeComment(comment, account);
 
         return "redirect:" + referrer;
+    }
+
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
     }
 }

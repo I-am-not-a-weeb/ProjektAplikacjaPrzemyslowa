@@ -10,8 +10,9 @@
 </head>
 <body>
 <div th:object="${meme}" class="container">
-    <div >
+    <div>
         <h2 th:text="*{getTitle()}"></h2>
+        <div th:each="tag:*{getTags()}"><span th:text="${tag.getName()}"></span></div>
         <h3>Posted by: <span ><a th:href="@{'/account/'+*{getAuthorMeme().getUsername()}}" th:text="*{getAuthorMeme().getUsername()}"></a></span></h3>
         <h3>Likes:
             <span th:text="*{getLikingAccounts().size()}">

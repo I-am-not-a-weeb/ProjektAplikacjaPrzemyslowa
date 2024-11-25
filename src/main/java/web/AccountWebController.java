@@ -17,7 +17,10 @@ public class AccountWebController {
     private AccountService accountService;
 
     @GetMapping( "/{username}")
-    public String showAccountPage(@PathVariable String username, Model model)
+    public String showAccountPage(
+            @PathVariable String username,
+            Model model
+    )
     {
         Account account = accountService.getAccountByUsername(username);
 
@@ -29,10 +32,11 @@ public class AccountWebController {
     }
 
     @PostMapping("/{username}/like")
-    public String likeAccount(@PathVariable String username,
-                              @RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer,
-                              @AuthenticationPrincipal OAuth2User oauthUser,
-                              Model model)
+    public String likeAccount(
+            @PathVariable String username,
+            @RequestHeader(value = HttpHeaders.REFERER, required = false) final String referrer,
+            @AuthenticationPrincipal OAuth2User oauthUser,
+            Model model)
     {
         Account likedAccount = accountService.getAccountByUsername(username);
         Account likingAccount = accountService.getAccountByUsername(oauthUser.getAttribute("login"));

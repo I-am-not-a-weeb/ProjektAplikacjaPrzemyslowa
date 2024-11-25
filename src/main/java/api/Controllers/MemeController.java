@@ -5,13 +5,19 @@ import Database.Comment;
 import Database.Meme;
 import Database.Tag;
 import Services.AccountService;
+import Services.CommentService;
 import Services.MemeService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.Set;
 
 
@@ -20,42 +26,54 @@ import java.util.Set;
 public class MemeController {
     @Autowired
     private MemeService memeService;
-
     @Autowired
     private AccountService accountService;
-
+    @Autowired
+    private CommentService commentService;
 
     @PostMapping
     public String addMeme(
-            @RequestParam String username,
             @RequestParam String title,
-            @RequestParam String image_url,
-            @RequestParam String[] tags,
-            HttpServletResponse response)
+            @RequestParam(value = "file") MultipartFile file,
+            @RequestParam(value = "tags", required = false) String[] tags,
+            HttpServletResponse response
+    )
     {
-        Account author = accountService.getAccountByUsername(username);
-        if(author == null) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Account account = accountService.getAccountByUsername(username);
+
+        if(account == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "Author not found";
         }
 
-        Meme meme = new Meme(title, image_url, author);
+        Meme meme = new Meme();
+        meme.setAuthorMeme(account);
+        meme.setTitle(title);
+        meme.setCreationDate(new Date());
 
         for(String tag : tags) {
             meme.addTag(new Tag(tag));
         }
-        //meme.setTags(tags);
-        memeService.addMeme(meme);
+        memeService.addMemeFile(file, meme);
         return "Meme added";
     }
     @GetMapping("/{id}")
     @ResponseBody
-    public Meme getMeme(@PathVariable Long id) {
+    public Meme getMeme(
+            @PathVariable Long id
+            ) {
         return memeService.getMemeById(id);
     }
 
     @PostMapping("/{id}/like")
-    public String likeMeme(@PathVariable Long id, @RequestParam String username, HttpServletResponse response) {
+    public String likeMeme(
+            @PathVariable Long id,
+            HttpServletResponse response
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
         Account account = accountService.getAccountByUsername(username);
         if(account == null) {
@@ -73,7 +91,10 @@ public class MemeController {
         return "Meme liked";
     }
     @GetMapping("/{id}/likes")
-    public int getNumOfLikes(@PathVariable Long id, HttpServletResponse response)
+    public int getNumOfLikes(
+            @PathVariable Long id,
+            HttpServletResponse response
+    )
     {
         Meme meme = memeService.getMemeById(id);
         if(meme == null) {
@@ -86,12 +107,12 @@ public class MemeController {
     @PostMapping("/{id}/comment")
     public void addCommentToMeme(
             @PathVariable Long id,
-            @RequestParam String username,
             @RequestParam String content,
-            @ModelAttribute Comment comment,
-            @AuthenticationPrincipal OAuth2User oauthUser,
             HttpServletResponse response
-            ) {
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         Account account = accountService.getAccountByUsername(username);
         if(account == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -102,10 +123,20 @@ public class MemeController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        //meme.addComment(new Comment(account,content));
+
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setAuthorComment(account);
+        comment.setMemeCommented(meme);
+        meme.addComment(comment);
+        commentService.save(comment);
+        response.setStatus(HttpServletResponse.SC_CREATED);
     }
     @GetMapping("/{id}/comments")
-    public Set<Comment> getComments(@PathVariable Long id, HttpServletResponse response) {
+    public Set<Comment> getComments(
+            @PathVariable Long id,
+            HttpServletResponse response
+    ) {
         Meme meme = memeService.getMemeById(id);
         if(meme == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

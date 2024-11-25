@@ -15,7 +15,6 @@ public class RankingWebController {
     @RequestMapping("/ranking")
     public String showRankingPage(Model model)
     {
-
         model.addAttribute("accounts", rankingService.rankAccounts());
         model.addAttribute("memes", rankingService.rankMemes());
         model.addAttribute("comments", rankingService.rankComments());

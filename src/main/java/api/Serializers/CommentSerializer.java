@@ -27,15 +27,13 @@ public class CommentSerializer extends StdSerializer<Comment>
         jsonGenerator.writeStartObject();
         jsonGenerator.writeNumberField("id", comment.getId());
         jsonGenerator.writeStringField("content", comment.getContent());
-        jsonGenerator.writeObjectField("authorComment", comment.getAuthorComment());
+        jsonGenerator.writeStringField("authorComment", comment.getAuthorComment().getUsername());
         jsonGenerator.writeNumberField("likes", comment.getLikingAccounts().size());
 
-        Set<String> subComments = comment.getChildComments().stream()
-                .map(Comment::getContent)
+        Set<Long> subComments = comment.getChildComments().stream()
+                .map(Comment::getId)
                 .collect(java.util.stream.Collectors.toSet());
         jsonGenerator.writeObjectField("subComments", subComments);
-
-
 
         jsonGenerator.writeEndObject();
     }
